@@ -1,0 +1,27 @@
+{
+    "apps": [
+        {
+            "name": "jc indoor map system",
+            "script": "bin/start.js",
+            "node_args": ["--harmony"],
+            "log_date_format": "YYYY-MM-DD HH:mm Z",
+            "instances": 1,
+            "env": {
+                "COMMON_VARIABLE": "true"
+            },
+            "env_production": {
+                "NODE_ENV": "production"
+            }
+        }
+    ],
+    "deploy": {
+        "production": {
+            "user": "nodejs",
+            "host": "aliyun183.jcbel.com",
+            "ref": "origin/master",
+            "repo": "nodejs@git.jcbel.com:/home/git/dev-js/jcloud/api.git",
+            "path": "/var/nodejs/production/jims/api",
+            "post-deploy": "npm install ; pm2 startOrRestart ecosystem.json --env production"
+        }
+    }
+}

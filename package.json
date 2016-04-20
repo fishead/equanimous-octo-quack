@@ -1,0 +1,53 @@
+{
+  "name": "eztv-api",
+  "version": "1.0.0",
+  "description": "eztv web",
+  "main": "src/index.js",
+  "bin": {
+    "eztv-api": "start.js"
+  },
+  "scripts": {
+    "start": "nodemon --harmony --watch src/ bin/start.js",
+    "debug": "DEBUG=eztv:* nodemon --harmony --watch src/ bin/start.js",
+    "test": "nodemon --harmony --watch test/ --exec mocha --colors --reporter spec --bail --ui bdd --recursive test/unit",
+    "coverage": "nodemon --harmony --watch test/ --exec istanbul cover ./node_modules/mocha/bin/_mocha -- ./test/unit --recursive",
+    "deploy": "pm2 deploy ecosystem.json production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fishead/eztv-api.git"
+  },
+  "keywords": [],
+  "author": "fishead <zhchuan7@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fishead/eztv-api/issues"
+  },
+  "homepage": "https://github.com/fishead/eztv-api#readme",
+  "dependencies": {
+    "body-parser": "^1.12.2",
+    "cheerio": "^0.20.0",
+    "co": "^4.5.1",
+    "cors": "^2.7.1",
+    "debug": "^2.2.0",
+    "express": "^4.13.3",
+    "isomorphic-fetch": "^2.2.1",
+    "lodash": "^4.6.1",
+    "morgan": "^1.5.2",
+    "string": "^3.3.1"
+  },
+  "devDependencies": {
+    "babel-eslint": "^6.0.3",
+    "chai": "^3.5.0",
+    "chance": "^1.0.2",
+    "eslint": "^2.8.0",
+    "eslint-config-airbnb": "^7.0.0",
+    "eslint-plugin-jsx-a11y": "^0.6.2",
+    "eslint-plugin-react": "^4.3.0",
+    "istanbul": "^0.4.2",
+    "mocha": "^2.2.5",
+    "nodemon": "^1.8.0",
+    "supertest": "^1.2.0",
+    "supertest-as-promised": "^3.1.0"
+  }
+}

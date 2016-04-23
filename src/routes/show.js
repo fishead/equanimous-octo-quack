@@ -4,12 +4,25 @@ const app = require('express')();
 const co = require('co');
 // const debug = require('debug')('eztv:routes:show');
 const util = require('./util');
-const entities = {
+let entities = {
   shows: {},
   episodes: {},
 };
-const _shows = [];
-const _episodes = [];
+let _shows = [];
+let _episodes = [];
+
+(function resetCache() {
+  setInterval(() => {
+    entities = {
+      shows: {},
+      episodes: {},
+    };
+    _shows = [];
+    _episodes = [];
+
+    resetCache();
+  }, 1000 * 60 * 10);
+}());
 
 
 const searchShows = () => (req, res, next) => {

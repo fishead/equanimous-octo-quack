@@ -4,14 +4,24 @@ const app = require('express')();
 const co = require('co');
 // const debug = require('debug')('eztv:routes:show');
 const util = require('./util');
-const _shows = {};
-const _episodes = {};
+const entities = {
+  shows: {},
+  episodes: {},
+};
+const _shows = [];
+const _episodes = [];
 
 
 const searchShows = () => (req, res, next) => {
   co(function *() {
-    const shows = yield util.getShows();
-    shows.forEach(show => (_shows[show.id] = show));
+    let shows = _shows.map(showId => entities.shows[showId]);
+    if (shows.length === 0) {
+      shows = yield util.getShows();
+      shows.forEach(show => {
+        entities.shows[show.id] = show;
+        _shows.push(show.id);
+      });
+    }
     res.json({
       error: false,
       data: shows
@@ -21,7 +31,7 @@ const searchShows = () => (req, res, next) => {
 
 const fetchShow = () => (req, res, next) => {
   co(function *() {
-    const show = _shows[req.params.showId];
+    const show = entities.shows[req.params.showId];
     res.json({
       error: false,
       data: show,
@@ -31,10 +41,12 @@ const fetchShow = () => (req, res, next) => {
 
 const searchEpisodes = () => (req, res, next) => {
   co(function *() {
-    const show = _shows[req.params.showId];
-    const episodes = yield util.getShowEpisodes(show);
-    show.episodes = episodes;
-    episodes.forEach(episode => (_episodes[episode.id] = episode));
+    const show = entities.shows[`${req.params.showId}`];
+    let episodes = show.episodes;
+    if (!episodes || episodes.length === 0) {
+      episodes = yield util.getShowEpisodes(show);
+      show.episodes = episodes;
+    }
     res.json({
       error: false,
       data: episodes,
